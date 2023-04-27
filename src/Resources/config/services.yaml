@@ -1,0 +1,32 @@
+services:
+  _defaults:
+    autowire: false
+    autoconfigure: false
+
+  nuvola.http_client:
+    class: Symfony\Contracts\HttpClient\HttpClientInterface
+    factory: [ 'Symfony\Component\HttpClient\HttpClient', 'create' ]
+
+  Nuvola\OAuth2AuthenticatorBundle\Token\TokenFactory:
+    - ~ # compiled
+
+  Nuvola\OAuth2AuthenticatorBundle\Token\TokenFactoryInterface: '@Nuvola\OAuth2AuthenticatorBundle\Token\TokenFactory'
+
+  Nuvola\OAuth2AuthenticatorBundle\Service\IntrospectService:
+    - '@nuvola.http_client'
+    - ~ # compiled
+    - ~ # compiled
+    - ~ # compiled
+    - '@Nuvola\OAuth2AuthenticatorBundle\Token\TokenFactoryInterface'
+
+  Nuvola\OAuth2AuthenticatorBundle\Service\IntrospectServiceInterface: '@Nuvola\OAuth2AuthenticatorBundle\Service\IntrospectService'
+
+  Nuvola\OAuth2AuthenticatorBundle\Security\OAuth2Authenticator:
+    - '@Nuvola\OAuth2AuthenticatorBundle\Service\IntrospectServiceInterface'
+    - '@Symfony\Contracts\EventDispatcher\EventDispatcherInterface'
+
+  Nuvola\OAuth2AuthenticatorBundle\Repository\UserRepository:
+    - '@nuvola.http_client'
+    - ~ # compiled
+
+  Nuvola\OAuth2AuthenticatorBundle\Repository\UserRepositoryInterface: '@Nuvola\OAuth2AuthenticatorBundle\Repository\UserRepository'

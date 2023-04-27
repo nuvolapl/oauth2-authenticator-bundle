@@ -1,0 +1,29 @@
+{
+  "name": "nuvolapl/oauth2-authenticator-bundle",
+  "type": "library",
+  "license": "proprietary",
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+  "require": {
+    "php": "^8.2",
+    "ext-json": "*",
+    "lcobucci/jwt": "^5.0",
+    "symfony/config": "^6.2",
+    "symfony/http-client": "^6.2",
+    "symfony/http-foundation": "^6.2",
+    "symfony/http-kernel": "^6.2",
+    "symfony/security-core": "^6.2"
+  },
+  "config": {
+    "optimize-autoloader": true,
+    "preferred-install": {
+      "*": "dist"
+    },
+    "sort-packages": true
+  },
+  "autoload": {
+    "psr-4": {
+      "Nuvola\\OAuth2AuthenticatorBundle\\": "src/"
+    }
+  }
+}
