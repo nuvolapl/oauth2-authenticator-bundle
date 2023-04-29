@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\Exception\CustomUserMessageAuthenticationException;
+use Symfony\Component\Security\Core\Exception\TokenNotFoundException;
 use Symfony\Component\Security\Http\Authenticator\AbstractAuthenticator;
 use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
 use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
@@ -38,9 +39,11 @@ final class OAuth2Authenticator extends AbstractAuthenticator
             throw new CustomUserMessageAuthenticationException('Authorization header cannot be empty.');
         }
 
-        $token = $this->introspectService->itrospect(
-            substr($authorization, strlen('Bearer '))
-        );
+        try {
+            $token = $this->introspectService->itrospect(substr($authorization, strlen('Bearer ')));
+        } catch (\RuntimeException $e) {
+            throw new TokenNotFoundException('Invalid token.', 0, $e);
+        }
 
         $event = $this->eventDispatcher?->dispatch(new TokenVerifiedEvent($token));
 
